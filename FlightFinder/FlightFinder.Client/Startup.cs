@@ -8,6 +8,10 @@ namespace FlightFinder.Client
 	{
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddRazorPages();
+			services.AddLogging();
+			//services.AddServerSideBlazor().AddCircuitOptions((options) => options.DetailedErrors = true );
+
 			services.AddFluxor(options =>
 			{
 				options.UseDependencyInjection(typeof(Startup).Assembly);
@@ -17,7 +21,7 @@ namespace FlightFinder.Client
 
 		public void Configure(IComponentsApplicationBuilder app)
 		{
-			app.AddComponent<Main>("app");
+			app.AddComponent<App>("app");
 		}
 	}
 }

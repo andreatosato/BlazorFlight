@@ -1,7 +1,8 @@
-﻿@inject IStore Store
-@inject IState<Client.Store.AppState> AppState
+﻿@page "/"
+@page "/flight"
 
-@Store.Initialize()
+@inject IStore Store
+@inject IState<Client.Store.AppState> AppState
 
 <div id="search-and-results-area">
     <div id="search-area" class="px-2 py-3">

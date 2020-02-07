@@ -1,4 +1,5 @@
 ﻿using Blazor.Fluxor;
+using FlightFinder.Shared;
 using System.Collections.Generic;
 
 namespace FlightFinder.Client.Store
@@ -9,7 +10,7 @@ namespace FlightFinder.Client.Store
 		{
 			return new AppState(
 				searchInProgress: true,
-				searchResults: new List<Shared.Itinerary>(),
+				searchResults: new List<Itinerary>(),
 				shortlist: state.Shortlist,
 				airports: state.Airports);
 		}
