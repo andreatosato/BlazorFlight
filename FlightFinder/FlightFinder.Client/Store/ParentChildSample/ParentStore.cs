@@ -14,6 +14,21 @@ namespace FlightFinder.Client.Store.ParentChildSample
             ChildRed = new ChildData();
         }
 
+        public ParentStore(ParentData parentData, ChildData green, ChildData red)
+        {
+            Parent = parentData;
+            if (green != null)
+            {
+                ChildGreen = green;
+                Parent.GreenValue = green.Selected;
+            }
+            if (red != null)
+            {
+                ChildRed = red;
+                Parent.RedValue = red.Selected;
+            }
+        }
+
         public ParentData Parent { get; set; }
         public ChildData ChildGreen { get; set; }
         public ChildData ChildRed { get; set; }
@@ -28,5 +43,7 @@ namespace FlightFinder.Client.Store.ParentChildSample
     public class ParentData
     {
         public int ButtonClicked { get; set; }
+        public bool RedValue { get; set; }
+        public bool GreenValue { get; set; }
     }
 }

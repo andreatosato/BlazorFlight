@@ -1,7 +1,44 @@
-﻿@using FlightFinder.Client.Store.ParentChildSample
+﻿@inherits Blazor.Fluxor.Components.FluxorComponent
+@using FlightFinder.Client.Store.ParentChildSample
+@inject IState<Client.Store.ParentChildSample.ParentStore> AppState
+@inject IDispatcher Dispatcher
 
-<h3>ChildRed</h3>
+<div class="container bg-danger">
+    <div class="row">
+        <h3>ChildRed</h3>
+    </div>
+    <div class="row">
+        <div class="col-6">Red Value</div>
+        <div class="col-6">@ParentData.GreenValue</div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <input type="text" value="@Name" @onchange="ChangeName" />
+        </div>
+        <div class="col-6">
+            <input type="checkbox" @onchange="CheckState" />
+        </div>
+    </div>
+</div>
+
 
 @code {
     [Parameter] public ParentData ParentData { get; set; }
+    [Parameter] public string Name { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        Name = AppState.Value.ChildRed.Name;
+    }
+
+    public void CheckState()
+    {
+        Dispatcher.Dispatch(new ChildRedCheckedAction());
+    }
+
+    public void ChangeName(ChangeEventArgs arg)
+    {
+        Dispatcher.Dispatch(new ChildRedNameChangedAction(arg.Value.ToString()));
+    }
 }

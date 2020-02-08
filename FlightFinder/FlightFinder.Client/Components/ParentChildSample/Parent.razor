@@ -2,27 +2,41 @@
 @inject IState<Client.Store.ParentChildSample.ParentStore> AppState
 @inject Microsoft.JSInterop.IJSRuntime js
 
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <h3>Parent</h3>
+    <div class="container bg-secondary ">
+        <div class="row">
+            <div class="col">
+                <h3>Parent</h3>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <span>@AppState.Value.Parent.ButtonClicked</span>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <ChildGreen ParentData="AppState.Value.Parent"></ChildGreen>
+        <div class="row">
+            <div class="col-6">
+                <button class="btn btn-dark" @onclick="ButtonClicked">Click Button Alert JS</button>
+            </div>
+            <div class="col-6">
+                <span>@AppState.Value.Parent.ButtonClicked</span>
+            </div>
         </div>
 
-        <div class="col">
-            <ChildRed ParentData="AppState.Value.Parent"></ChildRed>
+        <div class="row">
+            <div class="col">
+                <span>@GreenCheckedValue</span>
+            </div>
+
+            <div class="col">
+                <span>@RedCheckedValue</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <ChildGreen ParentData="AppState.Value.Parent"></ChildGreen>
+            </div>
+
+            <div class="col">
+                <ChildRed ParentData="AppState.Value.Parent"></ChildRed>
+            </div>
         </div>
     </div>
-</div>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -47,9 +61,38 @@
 
 @code
 { 
+    [Parameter]
+    public bool GreenCheckedValue {get; set;}
+    [Parameter] 
+    public bool RedCheckedValue {get; set;}
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        AppState.StateChanged += StateChanged;
+    }
+
+    void StateChanged(object sender, Client.Store.ParentChildSample.ParentStore e)
+    {
+        GreenCheckedValue = e.ChildGreen.Selected;
+        RedCheckedValue = e.ChildRed.Selected;
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await js.InvokeVoidAsync("openModal");
-        //return base.OnAfterRenderAsync(firstRender);
+        Console.WriteLine("OnAfterRenderAsync");
+        await js.InvokeVoidAsync("InteropSample.openModal");
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    protected override Task OnParametersSetAsync()
+    {
+        Console.WriteLine("OnParametersSetAsync");
+        return base.OnParametersSetAsync();
+    }
+
+    public async Task ButtonClicked()
+    {
+        await js.InvokeVoidAsync("alert", "Clicked");
     }
 }
