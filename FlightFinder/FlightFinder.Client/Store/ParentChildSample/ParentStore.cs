@@ -22,10 +22,21 @@ namespace FlightFinder.Client.Store.ParentChildSample
                 ChildGreen = green;
                 Parent.GreenValue = green.Selected;
             }
+            else
+            {
+                ChildGreen = new ChildData();
+                Parent.GreenValue = parentData.GreenValue;
+            }
+
             if (red != null)
             {
                 ChildRed = red;
                 Parent.RedValue = red.Selected;
+            }
+            else
+            {
+                ChildRed = new ChildData();
+                Parent.RedValue = parentData.RedValue;
             }
         }
 

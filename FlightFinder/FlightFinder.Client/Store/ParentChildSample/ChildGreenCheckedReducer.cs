@@ -10,6 +10,7 @@ namespace FlightFinder.Client.Store.ParentChildSample
     {
         public override ParentStore Reduce(ParentStore state, ChildGreenCheckedAction action)
         {
+            Console.WriteLine(state.Parent);
             return new ParentStore(state.Parent, new ChildData()
             {
                 Selected = !state.ChildGreen.Selected,
