@@ -17,5 +17,7 @@ namespace FlightFinder.Shared
 			OutboundDate = DateTime.Now.Date;
 			ReturnDate = OutboundDate.AddDays(7);
 		}
+
+		protected SearchCriteria() { }
 	}
 }

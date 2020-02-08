@@ -15,10 +15,6 @@ namespace FlightFinder.Client
 		public static async Task Main(string[] args)
 		{
 			var builder = WebAssemblyHostBuilder.CreateDefault(args);
-
-			//builder.Services.AddRazorPages();
-			//builder.Services.AddLogging();
-
 			AddHttpClient(builder.Services);
 
 
@@ -29,9 +25,6 @@ namespace FlightFinder.Client
 			});
 			builder.RootComponents.Add<App>("app");
 			await builder.Build().RunAsync();
-
-
-			//CreateHostBuilder(args).Build().Run();
 		}
 
 
@@ -41,7 +34,8 @@ namespace FlightFinder.Client
 			services.Remove(httpSvc);
 
 			// we add the WasmHttpMessageHandler
-			Type MonoWasmHttpMessageHandlerType = Assembly.Load("WebAssembly.Net.Http")
+			Type MonoWasmHttpMessageHandlerType = Assembly
+				.Load("WebAssembly.Net.Http")
 				.GetType("WebAssembly.Net.Http.HttpClient.WasmHttpMessageHandler");
 
 			services.AddScoped(MonoWasmHttpMessageHandlerType);
@@ -53,27 +47,14 @@ namespace FlightFinder.Client
 				var navigationManager = s.GetRequiredService<NavigationManager>();
 				h.BaseAddress = new Uri("http://localhost:59912/");
 			})
-			.ConfigurePrimaryHttpMessageHandler(sp =>
-				(HttpMessageHandler)sp.GetService(MonoWasmHttpMessageHandlerType));
+			.ConfigurePrimaryHttpMessageHandler(sp => (HttpMessageHandler)sp.GetService(MonoWasmHttpMessageHandlerType));
 
 			// this is for backwards compatibility
 			services.AddTransient<HttpClient>(s =>
 			{
 				var factory = s.GetService<IHttpClientFactory>();
-
 				return factory.CreateClient("local");
 			});
 		}
-		//public static IHostBuilder CreateHostBuilder(string[] args) =>
-		//  Host.CreateDefaultBuilder(args)
-		//	  .ConfigureWebHostDefaults(webBuilder =>
-		//	  {
-		//		  webBuilder.UseStartup<Startup>();
-		//	  });
-
-		//public static IWebAssemblyHostBuilder CreateHostBuilder(string[] args) =>
-		//	BlazorWebAssemblyHost
-		//		.CreateDefaultBuilder()
-		//		.UseBlazorStartup<Startup>();
 	}
 }

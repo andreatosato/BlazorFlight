@@ -18,6 +18,7 @@ namespace FlightFinder.Client.Page
 
         void IncrementCount()
         {
+            Console.WriteLine($"Current count: {State.Value.CurrentCounter}");
             Dispatcher.Dispatch(new IncrementCounterAction());
         }
     }
